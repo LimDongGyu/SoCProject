@@ -29,7 +29,7 @@ public class KakaoController {
     @Inject
     UserService userService;
 
-    public static String kakao_book_rest_uri = "https://dapi.kakao.com/v3/search/book?target=title";
+    public  String kakao_book_rest_uri = "https://dapi.kakao.com/v3/search/book?target=title";
 
     @RequestMapping(value = "/kakao_book_request", method = RequestMethod.GET)
     public String kakaoBookRequest(Model model, @RequestParam(name = "userId") Integer userId) {

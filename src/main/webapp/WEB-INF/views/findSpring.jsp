@@ -2,13 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Edit</title>
+    <title>findSpring</title>
 </head>
 <body>
 <h2>위치 ${instt_name}</h2>
 
-<c:forEach var="item" items="${water.springID}">
-    ${water.testresult}, ${water.failresult}, ${water.testeddate}<br/><br/>
+<c:forEach var="item" items="${water.list}">
+    ${water.list.entry} <br/><br/>
 </c:forEach>
 </body>
 </html>

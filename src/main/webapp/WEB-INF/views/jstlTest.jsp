@@ -32,7 +32,7 @@
     i값: ${i}<br/>
 </c:forEach>
 
-<%--forEach (Array, List, Set..)--%>
+<%--forEach (Array, koreatech.cse.domain.rest.List, Set..)--%>
 <c:forEach var="s" items="${stringArray}">
     ${s}<br/>
 </c:forEach>
