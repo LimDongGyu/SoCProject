@@ -21,7 +21,7 @@ import java.net.URLConnection;
 @Controller
 public class WaterRestController {
     @RequestMapping(value="/water/{instt_name}", method= RequestMethod.GET, produces = "application/json")
-    public String springRequest(List list,/*, @RequestParam(name = "instt_name") String instt_name*/@PathVariable String instt_name) throws IOException {
+    public String springRequest(List list, @RequestParam(name = "instt_name") @PathVariable String instt_name) throws IOException {
         //textblank.getInstituteName(instt_name);
         String strUrl = "http://api.data.go.kr/openapi/appn-mnrlsp-info-std";
         strUrl += "?serviceKey=4%2FF6EurpnGygV%2F15k3gSfm5k%2FZMwz8Ggz23KKmwfEggJJLEmMDsNPMTewcr1c0vjzBSfXImvYKEzfmxdCrGJmg%3D%3D";
@@ -30,7 +30,7 @@ public class WaterRestController {
         strUrl += "&s_list=1";
         strUrl += "&instt_nm=${instt_name}";
 
-        /*MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List> waterlistResponseEntity = restTemplate.exchange(
@@ -38,7 +38,7 @@ public class WaterRestController {
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
                 List.class
-        );*/
+        );
         System.out.println(strUrl);
 
         HttpURLConnection connection = null;
@@ -62,8 +62,9 @@ public class WaterRestController {
         while ((current = in.readLine()) != null) {
             urlString += current + "\n";
         }
-       //list = waterlistResponseEntity.getBody();
-       System.out.println(urlString);
+       list = waterlistResponseEntity.getBody();
+        System.out.println(urlString);
+        System.out.println(list);
         return "findSpring";
     }
 }
