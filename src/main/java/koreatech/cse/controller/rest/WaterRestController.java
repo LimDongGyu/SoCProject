@@ -10,27 +10,28 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import sun.nio.cs.ext.MS949;
 
 import javax.inject.Inject;
 import java.io.*;
-import java.net.HttpURLConnection;
+import java.net.*;
+import java.nio.charset.Charset;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 @Controller
 public class WaterRestController {
     @RequestMapping(value="/water/{instt_name}", method= RequestMethod.GET, produces = "application/json")
-    public String springRequest(List list, @RequestParam(name = "instt_name") @PathVariable String instt_name) throws IOException {
+    public String springRequest(List list, @PathVariable String instt_name) throws IOException {
+        System.out.println(instt_name);
+
         //textblank.getInstituteName(instt_name);
         String strUrl = "http://api.data.go.kr/openapi/appn-mnrlsp-info-std";
         strUrl += "?serviceKey=4%2FF6EurpnGygV%2F15k3gSfm5k%2FZMwz8Ggz23KKmwfEggJJLEmMDsNPMTewcr1c0vjzBSfXImvYKEzfmxdCrGJmg%3D%3D";
         strUrl += "&type=xml";
         strUrl += "&s_page=0";
-        strUrl += "&s_list=1";
-        strUrl += "&instt_nm=${instt_name}";
+        strUrl += "&s_list=100";
+        strUrl += "&instt_nm=" + URLEncoder.encode(instt_name, "UTF-8");
 
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        /*MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List> waterlistResponseEntity = restTemplate.exchange(
@@ -38,7 +39,8 @@ public class WaterRestController {
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
                 List.class
-        );
+        );*/
+
         System.out.println(strUrl);
 
         HttpURLConnection connection = null;
@@ -56,15 +58,17 @@ public class WaterRestController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-       BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+       BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "MS949"));
         String urlString = "";
         String current;
         while ((current = in.readLine()) != null) {
             urlString += current + "\n";
         }
-       list = waterlistResponseEntity.getBody();
+
+       //list = waterlistResponseEntity.getBody();
         System.out.println(urlString);
-        System.out.println(list);
+        //System.out.println(list);
         return "findSpring";
     }
 }
