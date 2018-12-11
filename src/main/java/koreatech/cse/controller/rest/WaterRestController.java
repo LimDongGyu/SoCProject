@@ -1,16 +1,17 @@
 package koreatech.cse.controller.rest;
 
 import koreatech.cse.domain.rest.List;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import sun.nio.cs.ext.MS949;
 
 import javax.inject.Inject;
 import java.io.*;
@@ -19,13 +20,19 @@ import java.nio.charset.Charset;
 
 @Controller
 public class WaterRestController {
+
+    @Value("${water.service.key}")
+    String water_service_key;
+
+
+    //관리기관명(충청남도 천안시 동남구)
     @RequestMapping(value="/water/{instt_name}", method= RequestMethod.GET, produces = "application/json")
     public String springRequest(List list, @PathVariable String instt_name) throws IOException {
         System.out.println(instt_name);
 
         //textblank.getInstituteName(instt_name);
         String strUrl = "http://api.data.go.kr/openapi/appn-mnrlsp-info-std";
-        strUrl += "?serviceKey=4%2FF6EurpnGygV%2F15k3gSfm5k%2FZMwz8Ggz23KKmwfEggJJLEmMDsNPMTewcr1c0vjzBSfXImvYKEzfmxdCrGJmg%3D%3D";
+        strUrl += water_service_key;
         strUrl += "&type=xml";
         strUrl += "&s_page=0";
         strUrl += "&s_list=100";
