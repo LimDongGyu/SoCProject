@@ -183,9 +183,9 @@
         </profile>
         <profile>
             <id>dev</id>
-            <propertiesstatic>
+            <properties>
                 <env>dev</env>
-            </propertiesstatic>
+            </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
