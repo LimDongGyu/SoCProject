@@ -42,8 +42,13 @@ public class WeatherController {
         strUrl += "?serviceKey=" + weather_service_key;
         strUrl += "&base_date=20181210";                                 /*발표일자*/
         strUrl += "&base_time=2330";                                     /*발표시각*/
+
+
+
         strUrl += "&nx=55";                                              /*예보지점 X 좌표*/
         strUrl += "&ny=127";                                             /*예보지점 Y 좌표*/
+
+
         strUrl += "&pageNo=1";
         strUrl += "&numOfRows=9";
         strUrl += "&_type=json";
@@ -129,6 +134,79 @@ public class WeatherController {
 
         br.close();
         urlconnection.disconnect();
+
+
+        System.out.println("debug : result = " + result);
+
+        //context debug
+        int cnt = 0;
+
+        String[] sbList = result.split(",");
+
+        for(String item : sbList){
+            System.out.println(cnt + " : " + item);
+            cnt++;
+        }
+
+
+
+        //특정단어(부분)만 자르기
+        String target1 = "\"POP";
+        int target_num1 = result.indexOf(target1);
+        String targetResult1 = result.substring(target_num1, (result.substring(target_num1).indexOf("}") + target_num1));
+        System.out.println(targetResult1);
+
+
+        String target2 = "\"PTY";
+        int target_num2 = result.indexOf(target2);
+        String targetResult2 = result.substring(target_num2, (result.substring(target_num2).indexOf("}") + target_num2));
+        System.out.println(targetResult2);
+
+
+        String target3 = "\"REH";
+        int target_num3 = result.indexOf(target3);
+        String targetResult3 = result.substring(target_num3, (result.substring(target_num3).indexOf("}") + target_num3));
+        System.out.println(targetResult3);
+
+
+        String target4 = "\"SKY";
+        int target_num4 = result.indexOf(target4);
+        String targetResult4 = result.substring(target_num4, (result.substring(target_num4).indexOf("}") + target_num4));
+        System.out.println(targetResult4);
+
+
+        String target5 = "\"T3H";
+        int target_num5 = result.indexOf(target5);
+        String targetResult5 = result.substring(target_num5, (result.substring(target_num5).indexOf("}") + target_num5));
+        System.out.println(targetResult5);
+
+
+        String target6 = "\"UUU";
+        int target_num6 = result.indexOf(target6);
+        String targetResult6 = result.substring(target_num6, (result.substring(target_num6).indexOf("}") + target_num6));
+        System.out.println(targetResult6);
+
+
+        String target7 = "\"VEC";
+        int target_num7 = result.indexOf(target7);
+        String targetResult7 = result.substring(target_num7, (result.substring(target_num7).indexOf("}") + target_num7));
+        System.out.println(targetResult7);
+
+
+        String target8 = "\"VVV";
+        int target_num8 = result.indexOf(target8);
+        String targetResult8 = result.substring(target_num8, (result.substring(target_num8).indexOf("}") + target_num8));
+        System.out.println(targetResult8);
+
+
+        String target9 = "\"WSD";
+        int target_num9 = result.indexOf(target9);
+        String targetResult9 = result.substring(target_num9, (result.substring(target_num9).indexOf("}") + target_num9));
+        System.out.println(targetResult9);
+
+
+
+        
 
 //        System.out.println(strUrl);
 //
