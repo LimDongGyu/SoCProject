@@ -64,6 +64,9 @@ public class WeatherController {
 
         System.out.println(result);
 
+        br.close();
+        urlconnection.disconnect();
+
 //        System.out.println(strUrl);
 //
 //        RestTemplate restTemplate = new RestTemplate();
@@ -88,18 +91,5 @@ public class WeatherController {
 //            System.out.println("/catch");
 //        }
 
-//
-//        try{
-//            System.out.println("try");
-//            ResponseEntity<Item> ItemResponseEntity
-//                    = restTemplate.getForEntity(strUrl, Item.class);
-//            Item item = ItemResponseEntity.getBody();
-//            System.out.println(item);
-//            System.out.println("/try");
-//        }catch (HttpClientErrorException e){
-//            System.out.println("catch");
-//            System.out.println(e.getStatusCode() + ": " + e.getStatusText());
-//            System.out.println("/catch");
-//        }
     }
 }
