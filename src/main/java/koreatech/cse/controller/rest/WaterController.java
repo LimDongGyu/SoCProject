@@ -56,9 +56,9 @@ public class WaterController {
         BufferedReader rd;
 
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
         } else {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream(),"utf-8"));
         }
 
         StringBuilder sb = new StringBuilder();
