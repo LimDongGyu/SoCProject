@@ -11,7 +11,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 public class WaterController {
@@ -99,17 +101,68 @@ public class WaterController {
 
 
 
+        List<String> list = new ArrayList<String>();
+
+
         //context debug
         int cnt = 0;
 
         String sbResult = sb.toString();
-        String[] sbList = sbResult.split(",");
+        String[] sbList = sbResult.split("}");
 
 
         for(String item : sbList){
             System.out.println(cnt + " : " + item);
             cnt++;
         }
+
+
+        //System.out.println("sbList size : " + sbList.length);
+/**/
+
+//        String[] category = new String[]{"약수터명", "소재지도로명주소", "위도", "경도", "지정일자", "일평균이용인구수", "수질검사일자", "수질검사결과구분", "부적합항목", "관리기간전화번호", "관리기관명", " 데이터기준일자","제공기관코드", "제공기관명"};
+//
+//        //System.out.println("category size : " + category.length);
+//
+//
+//        String targetResult = null;
+//        String[] t;
+//
+//        for(int i = 0; i <= 10; i++){
+//            for(int j = 0; j <= 13; j++){
+//                if(j != 13){
+//                    targetResult = sbList[i].substring(sbList[i].indexOf(category[j]), (sbList[i].substring(sbList[i].indexOf(category[j])).indexOf(j+1) + sbList[i].indexOf(category[j])));
+//                }else{
+//                    targetResult = sbList[i].substring(sbList[i].indexOf(category[j]), (sbList[i].substring(sbList[i].indexOf(category[j])).indexOf("시\"") + sbList[i].indexOf(category[j])));
+//                }
+//                list.add(targetResult);
+//            }
+//        }
+//
+//        System.out.println(list.get(0));
+
+/**/
+//        String[] category = new String[]{"약수터명", "소재지도로명주소", "위도", "경도", "지정일자", "일평균이용인구수", "수질검사일자", "수질검사결과구분", "부적합항목", "관리기간전화번호", "관리기관명", " 데이터기준일자","제공기관코드", "제공기관명"};
+//
+//        String targetResult = null;
+//
+//        String[] t;
+//
+//        for(int i = 0; i <= 13; i++){
+//            targetResult = sbList[i].substring(sbList[i].indexOf(category[i]), (sbList[i].substring(sbList[i].indexOf(category[i])).indexOf("}") + sbList[i].indexOf(category[i])));
+////            targetResult = targetResult.substring(targetResult.indexOf("fcstValue"), (targetResult.substring(targetResult.indexOf("fcstValue")).indexOf(",") + targetResult.indexOf("fcstValue")));
+////            t = targetResult.split("\":");
+//            //list.add(t);
+//            System.out.println(targetResult);
+//        }
+//
+//        System.out.println(list);
+
+
+
+//        System.out.println(sbList);
+
+
 
 
 //        //특정단어(부분)만 자르기

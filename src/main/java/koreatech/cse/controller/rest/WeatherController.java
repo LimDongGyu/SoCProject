@@ -22,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,11 +38,11 @@ public class WeatherController {
 
 //        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib";      /* 초단기 실황*/
 //        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastTimeData"; /* 초단기예보조회 */
-        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData"; /* 동네예보조회 -> numOfRows=9 로 설정하면 됨*/
+        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData"; /* 동네예보조회 -> numOfRows=11 로 설정하면 됨*/
 
         strUrl += "?serviceKey=" + weather_service_key;
-        strUrl += "&base_date=20181210";                                 /*발표일자*/
-        strUrl += "&base_time=2330";                                     /*발표시각*/
+        strUrl += "&base_date=20181211";                                 /*발표일자*/
+        strUrl += "&base_time=0500";                                     /*발표시각*/
 
 
 
@@ -50,7 +51,7 @@ public class WeatherController {
 
 
         strUrl += "&pageNo=1";
-        strUrl += "&numOfRows=9";
+        strUrl += "&numOfRows=11";
         strUrl += "&_type=json";
 
 
@@ -130,83 +131,89 @@ public class WeatherController {
             result = result + line + "\n";
         }
 
-        System.out.println(result);
+        //System.out.println(result);
 
         br.close();
         urlconnection.disconnect();
 
 
-        System.out.println("debug : result = " + result);
+
+
+        //System.out.println("debug : result = " + result);
 
         //context debug
-        int cnt = 0;
+//        int cnt = 0;
+//
+//        String[] sbList = result.split(",");
+//
+//        for(String item : sbList){
+//            System.out.println(cnt + " : " + item);
+//            cnt++;
+//        }
 
-        String[] sbList = result.split(",");
 
-        for(String item : sbList){
-            System.out.println(cnt + " : " + item);
-            cnt++;
+
+
+        List<String> list = new ArrayList<String>();
+
+
+
+//        //출력 값 정리
+//        String targetResult1 = result.substring(result.indexOf("\"POP"), (result.substring(result.indexOf("\"POP")).indexOf("}") + result.indexOf("\"POP")));
+//        targetResult1 = targetResult1.substring(targetResult1.indexOf("fcstValue"), (targetResult1.substring(targetResult1.indexOf("fcstValue")).indexOf(",") + targetResult1.indexOf("fcstValue")));
+
+//
+//        String targetResult2 = result.substring(result.indexOf("\"PTY"), (result.substring(result.indexOf("\"PTY")).indexOf("}") + result.indexOf("\"PTY")));
+//        String targetResult3 = result.substring(result.indexOf("\"REH"), (result.substring(result.indexOf("\"REH")).indexOf("}") + result.indexOf("\"REH")));
+//        String targetResult4 = result.substring(result.indexOf("\"SKY"), (result.substring(result.indexOf("\"SKY")).indexOf("}") + result.indexOf("\"SKY")));
+//        String targetResult5 = result.substring(result.indexOf("\"T3H"), (result.substring(result.indexOf("\"T3H")).indexOf("}") + result.indexOf("\"T3H")));
+//        String targetResult6 = result.substring(result.indexOf("\"UUU"), (result.substring(result.indexOf("\"UUU")).indexOf("}") + result.indexOf("\"UUU")));
+//        String targetResult7 = result.substring(result.indexOf("\"VEC"), (result.substring(result.indexOf("\"VEC")).indexOf("}") + result.indexOf("\"VEC")));
+//        String targetResult8 = result.substring(result.indexOf("\"VVV"), (result.substring(result.indexOf("\"VVV")).indexOf("}") + result.indexOf("\"VVV")));
+//        String targetResult9 = result.substring(result.indexOf("\"WSD"), (result.substring(result.indexOf("\"WSD")).indexOf("}") + result.indexOf("\"WSD")));
+//
+
+        //데이터 확인
+//        System.out.println(targetResult1);
+//        System.out.println(targetResult2);
+//        System.out.println(targetResult3);
+//        System.out.println(targetResult4);
+//        System.out.println(targetResult5);
+//        System.out.println(targetResult6);
+//        System.out.println(targetResult7);
+//        System.out.println(targetResult8);
+//        System.out.println(targetResult9);
+
+
+
+        //System.out.println(targetResult1);
+//        System.out.println(t1[0]);  //카테고리 값
+//        System.out.println(t1[1]);  //수치값
+
+
+
+        //차례대로, 강수확률, 강수형태, 습도, 하늘상태, 3시간 기온, 풍속(동서), 풍향, 풍속(남북), 풍속, 6시간 강수량
+        String[] category = new String[]{"\"POP","\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
+
+        String targetResult = null;
+
+        String[] t;
+
+        for(int i = 0; i <= 8; i++){
+            targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
+            targetResult = targetResult.substring(targetResult.indexOf("fcstValue"), (targetResult.substring(targetResult.indexOf("fcstValue")).indexOf(",") + targetResult.indexOf("fcstValue")));
+            t = targetResult.split("\":");
+            list.add(t[1]);
         }
 
-
-
-        //특정단어(부분)만 자르기
-        String target1 = "\"POP";
-        int target_num1 = result.indexOf(target1);
-        String targetResult1 = result.substring(target_num1, (result.substring(target_num1).indexOf("}") + target_num1));
-        System.out.println(targetResult1);
-
-
-        String target2 = "\"PTY";
-        int target_num2 = result.indexOf(target2);
-        String targetResult2 = result.substring(target_num2, (result.substring(target_num2).indexOf("}") + target_num2));
-        System.out.println(targetResult2);
-
-
-        String target3 = "\"REH";
-        int target_num3 = result.indexOf(target3);
-        String targetResult3 = result.substring(target_num3, (result.substring(target_num3).indexOf("}") + target_num3));
-        System.out.println(targetResult3);
-
-
-        String target4 = "\"SKY";
-        int target_num4 = result.indexOf(target4);
-        String targetResult4 = result.substring(target_num4, (result.substring(target_num4).indexOf("}") + target_num4));
-        System.out.println(targetResult4);
-
-
-        String target5 = "\"T3H";
-        int target_num5 = result.indexOf(target5);
-        String targetResult5 = result.substring(target_num5, (result.substring(target_num5).indexOf("}") + target_num5));
-        System.out.println(targetResult5);
-
-
-        String target6 = "\"UUU";
-        int target_num6 = result.indexOf(target6);
-        String targetResult6 = result.substring(target_num6, (result.substring(target_num6).indexOf("}") + target_num6));
-        System.out.println(targetResult6);
-
-
-        String target7 = "\"VEC";
-        int target_num7 = result.indexOf(target7);
-        String targetResult7 = result.substring(target_num7, (result.substring(target_num7).indexOf("}") + target_num7));
-        System.out.println(targetResult7);
-
-
-        String target8 = "\"VVV";
-        int target_num8 = result.indexOf(target8);
-        String targetResult8 = result.substring(target_num8, (result.substring(target_num8).indexOf("}") + target_num8));
-        System.out.println(targetResult8);
-
-
-        String target9 = "\"WSD";
-        int target_num9 = result.indexOf(target9);
-        String targetResult9 = result.substring(target_num9, (result.substring(target_num9).indexOf("}") + target_num9));
-        System.out.println(targetResult9);
+        System.out.println(list);
 
 
 
-        
+
+//        System.out.println(list.get(1));
+
+
 
 //        System.out.println(strUrl);
 //
@@ -223,8 +230,8 @@ public class WeatherController {
 //            Weather weather = WeatherResponseEntity.getBody();
 //            System.out.println(weather.getResponse());
 //            System.out.println("/try");
-////
-////            System.out.println(weather.toString());
+//
+//            System.out.println(weather.toString());
 //
 //        }catch (HttpClientErrorException e){
 //            System.out.println("catch");
