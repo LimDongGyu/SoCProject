@@ -9,6 +9,7 @@
     <version>001</version>
     <packaging>war</packaging>
 
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -183,9 +184,9 @@
         </profile>
         <profile>
             <id>dev</id>
-            <propertiesstatic>
+            <properties>
                 <env>dev</env>
-            </propertiesstatic>
+            </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
