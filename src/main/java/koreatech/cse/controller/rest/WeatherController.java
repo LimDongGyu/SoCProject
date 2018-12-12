@@ -36,13 +36,13 @@ public class WeatherController {
 
 //        String str = URLEncoder.encode()
 
-//        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib";      /* 초단기 실황*/
-//        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastTimeData"; /* 초단기예보조회 */
-        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData"; /* 동네예보조회 -> numOfRows=11 로 설정하면 됨*/
+        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib";      /* 초단기 실황*/
+//        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastTimeData";  /* 초단기예보조회 */
+//        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData";   /* 동네예보조회 -> numOfRows=11 로 설정하면 됨*/
 
         strUrl += "?serviceKey=" + weather_service_key;
         strUrl += "&base_date=20181211";                                 /*발표일자*/
-        strUrl += "&base_time=0500";                                     /*발표시각*/
+        strUrl += "&base_time=2100";                                     /*발표시각*/
 
 
 
@@ -192,6 +192,8 @@ public class WeatherController {
 
 
 
+
+        /* 동네예보
         //차례대로, 강수확률, 강수형태, 습도, 하늘상태, 3시간 기온, 풍속(동서), 풍향, 풍속(남북), 풍속, 6시간 강수량
         String[] category = new String[]{"\"POP","\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
 
@@ -199,11 +201,61 @@ public class WeatherController {
 
         String[] t;
 
-        for(int i = 0; i <= 8; i++){
-            targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
-            targetResult = targetResult.substring(targetResult.indexOf("fcstValue"), (targetResult.substring(targetResult.indexOf("fcstValue")).indexOf(",") + targetResult.indexOf("fcstValue")));
-            t = targetResult.split("\":");
-            list.add(t[1]);
+        for(int i = 0; i <= 9; i++){
+
+            if(result.indexOf(category[i]) == -1){
+                continue;
+            }
+            else{
+                targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
+                System.out.println("targetResult : " + targetResult);
+
+                targetResult = targetResult.substring(targetResult.indexOf("fcstValue"), (targetResult.substring(targetResult.indexOf("fcstValue")).indexOf(",") + targetResult.indexOf("fcstValue")));
+                t = targetResult.split("\":");
+                list.add(t[1]);
+            }
+
+        }
+
+        System.out.println(list);
+        */
+
+
+
+        /* 초단기 예보 */
+        String[] category = new String[]{"\"POP","\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
+
+        String targetResult = null;
+
+        String[] t;
+
+        System.out.println("result : " + result);
+
+        for(int i = 0; i <= 9; i++){
+
+            if(result.indexOf(category[i]) == -1){
+                continue;
+            }
+            else{
+                targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
+                System.out.println("targetResult : " + targetResult);
+//
+//                System.out.println(targetResult.indexOf("obsrValue"));
+//                System.out.println(targetResult.length()-1);
+
+//                targetResult = targetResult.substring(targetResult.indexOf("obsrValue"), (targetResult.substring(targetResult.indexOf("obsrValue")).indexOf(",") + targetResult.indexOf("obsrValue")));
+
+                System.out.println(targetResult.substring(1, 4));
+                list.add(targetResult.substring(1, 4));
+
+                targetResult = targetResult.substring(targetResult.indexOf("obsrValue"), targetResult.length());
+                list.add(targetResult.substring(11, targetResult.length()));
+
+//                System.out.println("targetResult : " + targetResult);
+//                t = targetResult.split("\":");
+//                list.add(t[1]);
+            }
+
         }
 
         System.out.println(list);
