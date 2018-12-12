@@ -171,24 +171,7 @@ public class WeatherController {
 //        String targetResult7 = result.substring(result.indexOf("\"VEC"), (result.substring(result.indexOf("\"VEC")).indexOf("}") + result.indexOf("\"VEC")));
 //        String targetResult8 = result.substring(result.indexOf("\"VVV"), (result.substring(result.indexOf("\"VVV")).indexOf("}") + result.indexOf("\"VVV")));
 //        String targetResult9 = result.substring(result.indexOf("\"WSD"), (result.substring(result.indexOf("\"WSD")).indexOf("}") + result.indexOf("\"WSD")));
-//
 
-        //데이터 확인
-//        System.out.println(targetResult1);
-//        System.out.println(targetResult2);
-//        System.out.println(targetResult3);
-//        System.out.println(targetResult4);
-//        System.out.println(targetResult5);
-//        System.out.println(targetResult6);
-//        System.out.println(targetResult7);
-//        System.out.println(targetResult8);
-//        System.out.println(targetResult9);
-
-
-
-        //System.out.println(targetResult1);
-//        System.out.println(t1[0]);  //카테고리 값
-//        System.out.println(t1[1]);  //수치값
 
 
 
@@ -236,60 +219,24 @@ public class WeatherController {
             if(result.indexOf(category[i]) == -1){
                 continue;
             }
+
             else{
                 targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
                 System.out.println("targetResult : " + targetResult);
-//
-//                System.out.println(targetResult.indexOf("obsrValue"));
-//                System.out.println(targetResult.length()-1);
-
-//                targetResult = targetResult.substring(targetResult.indexOf("obsrValue"), (targetResult.substring(targetResult.indexOf("obsrValue")).indexOf(",") + targetResult.indexOf("obsrValue")));
 
                 System.out.println(targetResult.substring(1, 4));
                 list.add(targetResult.substring(1, 4));
 
                 targetResult = targetResult.substring(targetResult.indexOf("obsrValue"), targetResult.length());
                 list.add(targetResult.substring(11, targetResult.length()));
-
-//                System.out.println("targetResult : " + targetResult);
-//                t = targetResult.split("\":");
-//                list.add(t[1]);
             }
-
         }
 
         System.out.println(list);
 
 
-
-
 //        System.out.println(list.get(1));
 
-
-
-//        System.out.println(strUrl);
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        try{
-//            System.out.println("try");
-//
-//            ResponseEntity<Weather> WeatherResponseEntity
-//                    = restTemplate.getForEntity(strUrl, Weather.class);
-//
-//            System.out.println(WeatherResponseEntity.toString());
-//
-//            Weather weather = WeatherResponseEntity.getBody();
-//            System.out.println(weather.getResponse());
-//            System.out.println("/try");
-//
-//            System.out.println(weather.toString());
-//
-//        }catch (HttpClientErrorException e){
-//            System.out.println("catch");
-//            System.out.println(e.getStatusCode() + ": " + e.getStatusText());
-//            System.out.println("/catch");
-//        }
 
     }
 }
