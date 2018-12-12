@@ -1,36 +1,24 @@
-package koreatech.cse.controller.rest;
+package koreatech.cse.service;
 
-import koreatech.cse.domain.rest.*;
-import koreatech.cse.domain.weather.Weather;
-import koreatech.cse.repository.TemperatureMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-public class WeatherController {
+@Service
+public class WeatherService{
+
     @Value("${weather.service.key}")
     String weather_service_key;
 
-    @RequestMapping("/weather")
     public void getWeather() throws IOException {
         System.out.println("Testing GET METHOD -----/weather ");
 
@@ -117,10 +105,10 @@ public class WeatherController {
 
         br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8"));
 
-        String result="";
+        String result = "";
         String line;
 
-        while((line = br.readLine()) != null){
+        while ((line = br.readLine()) != null) {
             result = result + line + "\n";
         }
 
@@ -128,8 +116,6 @@ public class WeatherController {
 
         br.close();
         urlconnection.disconnect();
-
-
 
 
         //System.out.println("debug : result = " + result);
@@ -145,10 +131,7 @@ public class WeatherController {
 //        }
 
 
-
-
         List<String> list = new ArrayList<String>();
-
 
 
 //        //출력 값 정리
@@ -199,7 +182,7 @@ public class WeatherController {
 
 
         /* 초단기 예보 */
-        String[] category = new String[]{"\"POP","\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
+        String[] category = new String[]{"\"POP", "\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
 
         String targetResult = null;
 
@@ -207,12 +190,11 @@ public class WeatherController {
 
         System.out.println("result : " + result);
 
-        for(int i = 0; i <= 9; i++){
+        for (int i = 0; i <= 9; i++) {
 
-            if(result.indexOf(category[i]) == -1){
+            if (result.indexOf(category[i]) == -1) {
                 continue;
-            }
-            else{
+            } else {
                 targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
                 System.out.println("targetResult : " + targetResult);
 
@@ -225,10 +207,7 @@ public class WeatherController {
         }
 
         System.out.println(list);
-
+    }
 
 //        System.out.println(list.get(1));
-
-
-    }
 }
