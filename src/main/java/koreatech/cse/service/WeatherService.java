@@ -19,6 +19,7 @@ public class WeatherService{
     @Value("${weather.service.key}")
     String weather_service_key;
 
+    //인자로 x, y값, time을 받는다.
     public void getWeather() throws IOException {
         System.out.println("Testing GET METHOD -----/weather ");
 
