@@ -120,6 +120,9 @@ public class WaterService {
 
         List<String> totalList = new ArrayList<String>();
 
+        String test = "";
+        int x = 0;
+        int y = 0;
 
         //수질검사결과구분에 적합 부분 검사
         for(int i = 0; i < sbList.length-1; i++) {
@@ -150,9 +153,17 @@ public class WaterService {
 //                    System.out.println(i + " : " + mineralList.get(2) + mineralList.get(2).getClass());
 //                    System.out.println(i + " : " + mineralList.get(3) + mineralList.get(3).getClass());
 
-                    String test = mineralList.get(2);
+                    test = mineralList.get(2);
 //                    System.out.println(test.getClass());
-                    System.out.println((int)Double.parseDouble(test));
+//                    System.out.println((int)Double.parseDouble(test));
+                    x = (int)Double.parseDouble(test);
+
+                    test = mineralList.get(3);
+                    y = (int)Double.parseDouble(test);
+
+                    //System.out.println("x : " + x + ", y : " + y);
+
+                    weatherService.getWeather(x, y, date, time);
 
                 }
                 //null처리 때문에 그런듯
@@ -166,7 +177,7 @@ public class WaterService {
             }
         }
 
-        System.out.println(totalList);
+        //System.out.println(totalList);
 
 
 
