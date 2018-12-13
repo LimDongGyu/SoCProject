@@ -23,9 +23,9 @@ public class Item {
     @JsonProperty("category")
     private String category;
     @JsonProperty("nx")
-    private Integer nx;
+    private Double nx;
     @JsonProperty("ny")
-    private Integer ny;
+    private Double ny;
     @JsonProperty("obsrValue")
     private Integer obsrValue;
 
@@ -60,22 +60,22 @@ public class Item {
     }
 
     @JsonProperty("nx")
-    public Integer getNx() {
+    public Double getNx() {
         return nx;
     }
 
     @JsonProperty("nx")
-    public void setNx(Integer nx) {
+    public void setNx(Double nx) {
         this.nx = nx;
     }
 
     @JsonProperty("ny")
-    public Integer getNy() {
+    public Double getNy() {
         return ny;
     }
 
     @JsonProperty("ny")
-    public void setNy(Integer ny) {
+    public void setNy(Double ny) {
         this.ny = ny;
     }
 
