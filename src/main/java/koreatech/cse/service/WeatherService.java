@@ -19,21 +19,21 @@ public class WeatherService{
     @Value("${weather.service.key}")
     String weather_service_key;
 
-    //인자로 x, y값, time을 받는다.
-    public void getWeather() throws IOException {
+    //인자로 x, y값, time, date을 받는다.
+    public void getWeather(int x, int y, String date, String time) throws IOException {
         System.out.println("Testing GET METHOD -----/weather ");
 
 //        String str = URLEncoder.encode()
 
-        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib";      /* 초단기 실황*/
+//        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib";      /* 초단기 실황*/
 //        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastTimeData";  /* 초단기예보조회 */
-//        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData";   /* 동네예보조회 -> numOfRows=11 로 설정하면 됨*/
+        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData";   /* 동네예보조회 -> numOfRows=11 로 설정하면 됨*/
 
         strUrl += "?serviceKey=" + weather_service_key;
-        strUrl += "&base_date=20181212";                                 /*발표일자*/
-        strUrl += "&base_time=0300";                                     /*발표시각*/
-        strUrl += "&nx=55";                                              /*예보지점 X 좌표*/
-        strUrl += "&ny=127";                                             /*예보지점 Y 좌표*/
+        strUrl += "&base_date="+ date;                                 /*발표일자*/
+        strUrl += "&base_time=" + time;                                     /*발표시각*/
+        strUrl += "&nx=" + x;                                              /*예보지점 X 좌표*/
+        strUrl += "&ny=" + y;                                             /*예보지점 Y 좌표*/
         strUrl += "&pageNo=1";
         strUrl += "&numOfRows=11";
         strUrl += "&_type=json";
@@ -153,11 +153,11 @@ public class WeatherService{
 
 
 
-        /* 동네예보
+        /* 동네예보 */
         //차례대로, 강수확률, 강수형태, 습도, 하늘상태, 3시간 기온, 풍속(동서), 풍향, 풍속(남북), 풍속, 6시간 강수량
         String[] category = new String[]{"\"POP","\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
 
-        String targetResult = null;
+        String targetResult = "";
 
         String[] t;
 
@@ -170,6 +170,8 @@ public class WeatherService{
                 targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
                 System.out.println("targetResult : " + targetResult);
 
+                list.add(targetResult.substring(1,4));
+
                 targetResult = targetResult.substring(targetResult.indexOf("fcstValue"), (targetResult.substring(targetResult.indexOf("fcstValue")).indexOf(",") + targetResult.indexOf("fcstValue")));
                 t = targetResult.split("\":");
                 list.add(t[1]);
@@ -178,36 +180,34 @@ public class WeatherService{
         }
 
         System.out.println(list);
-        */
 
 
 
+        //TODO 지우면 디짐
         /* 초단기 예보 */
-        String[] category = new String[]{"\"POP", "\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
+//        String[] category = new String[]{"\"POP", "\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
+//
+//        String targetResult = null;
+//
+//        System.out.println("result : " + result);
+//
+//        for (int i = 0; i <= 9; i++) {
+//
+//            if (result.indexOf(category[i]) == -1) {
+//                continue;
+//            } else {
+//                targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
+//                System.out.println("targetResult : " + targetResult);
+//
+//                System.out.println(targetResult.substring(1, 4));
+//                list.add(targetResult.substring(1, 4));
+//
+//                targetResult = targetResult.substring(targetResult.indexOf("obsrValue"), targetResult.length());
+//                list.add(targetResult.substring(11, targetResult.length()));
+//            }
+//        }
 
-        String targetResult = null;
-
-        String[] t;
-
-        System.out.println("result : " + result);
-
-        for (int i = 0; i <= 9; i++) {
-
-            if (result.indexOf(category[i]) == -1) {
-                continue;
-            } else {
-                targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
-                System.out.println("targetResult : " + targetResult);
-
-                System.out.println(targetResult.substring(1, 4));
-                list.add(targetResult.substring(1, 4));
-
-                targetResult = targetResult.substring(targetResult.indexOf("obsrValue"), targetResult.length());
-                list.add(targetResult.substring(11, targetResult.length()));
-            }
-        }
-
-        System.out.println(list);
+       // System.out.println(list);
     }
 
 //        System.out.println(list.get(1));
