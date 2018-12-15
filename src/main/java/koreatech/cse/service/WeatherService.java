@@ -20,7 +20,7 @@ public class WeatherService{
     String weather_service_key;
 
     double priority = 0;
-    List<String> list = new ArrayList<String>();
+    public List<String> list = new ArrayList<String>();
 
 
     //인자로 x, y값, time, date을 받는다.
@@ -117,42 +117,9 @@ public class WeatherService{
             result = result + line + "\n";
         }
 
-        //System.out.println(result);
 
         br.close();
         urlconnection.disconnect();
-
-
-        //System.out.println("debug : result = " + result);
-
-        //context debug
-//        int cnt = 0;
-//
-//        String[] sbList = result.split(",");
-//
-//        for(String item : sbList){
-//            System.out.println(cnt + " : " + item);
-//            cnt++;
-//        }
-
-
-
-
-//        //출력 값 정리
-//        String targetResult1 = result.substring(result.indexOf("\"POP"), (result.substring(result.indexOf("\"POP")).indexOf("}") + result.indexOf("\"POP")));
-//        targetResult1 = targetResult1.substring(targetResult1.indexOf("fcstValue"), (targetResult1.substring(targetResult1.indexOf("fcstValue")).indexOf(",") + targetResult1.indexOf("fcstValue")));
-
-//
-//        String targetResult2 = result.substring(result.indexOf("\"PTY"), (result.substring(result.indexOf("\"PTY")).indexOf("}") + result.indexOf("\"PTY")));
-//        String targetResult3 = result.substring(result.indexOf("\"REH"), (result.substring(result.indexOf("\"REH")).indexOf("}") + result.indexOf("\"REH")));
-//        String targetResult4 = result.substring(result.indexOf("\"SKY"), (result.substring(result.indexOf("\"SKY")).indexOf("}") + result.indexOf("\"SKY")));
-//        String targetResult5 = result.substring(result.indexOf("\"T3H"), (result.substring(result.indexOf("\"T3H")).indexOf("}") + result.indexOf("\"T3H")));
-//        String targetResult6 = result.substring(result.indexOf("\"UUU"), (result.substring(result.indexOf("\"UUU")).indexOf("}") + result.indexOf("\"UUU")));
-//        String targetResult7 = result.substring(result.indexOf("\"VEC"), (result.substring(result.indexOf("\"VEC")).indexOf("}") + result.indexOf("\"VEC")));
-//        String targetResult8 = result.substring(result.indexOf("\"VVV"), (result.substring(result.indexOf("\"VVV")).indexOf("}") + result.indexOf("\"VVV")));
-//        String targetResult9 = result.substring(result.indexOf("\"WSD"), (result.substring(result.indexOf("\"WSD")).indexOf("}") + result.indexOf("\"WSD")));
-
-
 
 
 
@@ -193,17 +160,12 @@ public class WeatherService{
 
         String targetResult = "";
 
-//        System.out.println("result : " + result);
-
         for (int i = 0; i <= 9; i++) {
 
             if (result.indexOf(category[i]) == -1) {
                 continue;
             } else {
                 targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
-
-//                System.out.println("targetResult : " + targetResult);
-//                System.out.println(targetResult.substring(1, 4));
 
                 list.add(targetResult.substring(1, 4));
 
@@ -212,7 +174,7 @@ public class WeatherService{
             }
         }
 
-        System.out.println(list);
+//        System.out.println(list);
 
 
         //TODO 우선순위 설정하는 부분
@@ -220,27 +182,27 @@ public class WeatherService{
         //String[] category = new String[]{"\"POP", "\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
 
         for(int i = 0; i < list.size()/2; i++){
-            System.out.println(i + " : " + priority);
+//            System.out.println(i + " : " + priority);
             switch (list.get(i*2)){
                 case "POP":
                     priority += Double.parseDouble(list.get(i*2+1));
-                    System.out.println(priority);
+//                    System.out.println(priority);
                     continue;
                 case "PTY":
                     priority += Double.parseDouble(list.get(i*2+1));
-                    System.out.println(priority);
+//                    System.out.println(priority);
                     continue;
                 case "REH":
                     priority += Double.parseDouble(list.get(i*2+1));
-                    System.out.println(priority);
+//                    System.out.println(priority);
                     continue;
                 case "SKY":
                     priority += Double.parseDouble(list.get(i*2+1));
-                    System.out.println(priority);
+//                    System.out.println(priority);
                     continue;
                 case "T3H":
                     priority += Double.parseDouble(list.get(i*2+1));
-                    System.out.println(priority);
+//                    System.out.println(priority);
                     continue;
 //                case "UUU":
 //                    priority += Double.parseDouble(list.get(i*2+1));
@@ -253,15 +215,15 @@ public class WeatherService{
 //                    System.out.println(priority);
                 case "WSD":
                     priority += Double.parseDouble(list.get(i*2+1));
-                    System.out.println(priority);
+//                    System.out.println(priority);
                     continue;
                 case "R06":
                     priority += Double.parseDouble(list.get(i*2+1));     /* 6시간 강수량 */
-                    System.out.println(priority);
+//                    System.out.println(priority);
                     continue;
             }
 
-            System.out.println("priority : " + priority);
+//            System.out.println("priority : " + priority);
         }
     }
 

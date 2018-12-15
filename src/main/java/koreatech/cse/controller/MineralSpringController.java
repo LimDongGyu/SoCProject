@@ -19,13 +19,12 @@ import java.net.URLEncoder;
 @RestController
 @RequestMapping("/MineralSpring")
 public class MineralSpringController {
+
     @Inject
     WaterService waterService;
+
     @Inject
     WeatherService weatherService;
-
-    // 요청메소드 예상
-    // http://localhost:8080/MineralSpring?location=강원도 수원시&time=0300
 
 
     //TODO 20181213 파라미터 값으로 날짜도 받아와야 함, 또, 약수터?시간,날짜,약수터이름 포맷도 만들어야 함
@@ -40,17 +39,19 @@ public class MineralSpringController {
         System.out.println(location);
 
 
-        //waterService에는 인자로 location
-        //waterService.getWater(location);
         waterService.getWater(location, date, time);
-
-        //waterService에서 x, y 좌표에 해당하는 값을 반환해주는 리스트를 담아와야 함
-        //weatherService에는 인자로 waterService에서 받아온 위도, 경도 그리고 사용자 입력으로 받은 time 정보를 입력해주면 된다.
-        //weatherService.getWeather(int x, int y, time);
-        //weatherService.getWeather();
+//
+//        System.out.println("mineralSpringController : "+ waterService.mineralSpringResult.toString());
+//        waterService.WaterServiceClear();
 
         //재가공
         //나중에 MineralSpringService에서 처리해도 되고 여기서 처리해도 됨
+
+        System.out.println(waterService.totalList);
+        System.out.println(weatherService.list);
+
+        weatherService.weatherServiceClear();
+        waterService.WaterServiceClear();
 
 
     }
