@@ -25,7 +25,8 @@ public class WaterService {
     WeatherService weatherService;
 
     public List<String> mineralSpringResult = new ArrayList<String>();
-    public List<String> totalList = new ArrayList<String>();
+    public List<String> totalList = new ArrayList<String>();               //제공기관명 + 시간으로 검색한 결과
+    public List<String> mineralList2 = new ArrayList<String>();            //약수터 이름으로 검색한 결과
 
 
     public void getWater(String location, String date, String time) throws IOException {
@@ -89,9 +90,6 @@ public class WaterService {
         conn.disconnect();
 
 
-        List<String> list = new ArrayList<String>();
-
-
         //context debug
         int cnt = 0;
 
@@ -132,7 +130,6 @@ public class WaterService {
 
                 //여기서 적합 판정을 받은 리스트이므로, 위도, 경도 값을 WeatherService로 보내서 다 확인을 해야한다.
                 if(mineralList.get(2).equals("") && mineralList.get(3).equals("")){
-//                    System.out.println(i + " : null");
                 }else{
                     totalList.add(mineralList.toString());
 //                    System.out.println(i + " : " + mineralList);
@@ -164,7 +161,6 @@ public class WaterService {
 
 
 
-
     public void getWater2(String asSpring) throws IOException {
 
         StringBuilder urlBuilder = new StringBuilder("http://api.data.go.kr/openapi/appn-mnrlsp-info-std"); /*URL*/
@@ -173,7 +169,7 @@ public class WaterService {
         urlBuilder.append("&" + URLEncoder.encode("s_page", "UTF-8") + "=" + URLEncoder.encode("0", "UTF-8")); /*조회 시작 지점*/
         urlBuilder.append("&" + URLEncoder.encode("s_list", "UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 번에 조회될 최대 row 갯수*/
         urlBuilder.append("&" + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*XML/JSON 여부*/
-        urlBuilder.append("&" + URLEncoder.encode("mnrlsp_nm", "UTF-8") + "=" + URLEncoder.encode(asSpring, "UTF-8")); /*제공기관명*/
+        urlBuilder.append("&" + URLEncoder.encode("mnrlsp_nm", "UTF-8") + "=" + URLEncoder.encode(asSpring, "UTF-8")); /*약수터 이름*/
 
 
         System.out.println(urlBuilder);
@@ -184,7 +180,9 @@ public class WaterService {
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
 
+
         System.out.println("Response code: " + conn.getResponseCode());
+
 
         BufferedReader rd;
 
@@ -194,17 +192,18 @@ public class WaterService {
             rd = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
         }
 
+
         StringBuilder sb = new StringBuilder();
         String line;
+
 
         while ((line = rd.readLine()) != null) {
             sb.append(line);
         }
 
+
         rd.close();
         conn.disconnect();
-
-        List<String> list = new ArrayList<String>();
 
 
         //context debug
@@ -222,41 +221,27 @@ public class WaterService {
 
         String[] category = new String[]{"약수터명", "소재지지번주소", "위도", "경도", "수질검사결과구분", "부적합항목", "관리기관전화번호"};
 
-        List<String> mineralList = new ArrayList<String>();
-
 
         // 3, 33, 69, 77, 134, 161, 187
 
-        List<String> totalList = new ArrayList<String>();
-
-
         //수질검사결과구분에 적합 부분 검사
         for(int i = 0; i < sbList.length-1; i++) {
-            if((sbList[i].substring(sbList[i].indexOf(category[4]) + 11, sbList[i].indexOf("\",\"부적합항목"))).equals("부적합")){
-                continue;
-            }
-            else {
-                mineralList.add(sbList[i].substring(sbList[i].indexOf(category[0]) + 7, sbList[i].indexOf("\",\"소재지도로명주소"))); //약수터명
-                mineralList.add(sbList[i].substring(sbList[i].indexOf(category[1]) + 10, sbList[i].indexOf("\",\"위도")));            //소재지지번주소
-                mineralList.add(sbList[i].substring(sbList[i].indexOf(category[2]) + 5, sbList[i].indexOf("\",\"경도")));            //위도
-                mineralList.add(sbList[i].substring(sbList[i].indexOf(category[3]) + 5, sbList[i].indexOf("\",\"지정일자")));       //경도
-                mineralList.add(sbList[i].substring(sbList[i].indexOf(category[4]) + 11, sbList[i].indexOf("\",\"부적합항목")));       //수질검사결과구분
-                mineralList.add(sbList[i].substring(sbList[i].indexOf(category[5]) + 8, sbList[i].indexOf("\",\"관리기관전화번호")));     //부적합항목
-                mineralList.add(sbList[i].substring(sbList[i].indexOf(category[6]) + 11, sbList[i].indexOf("\",\"관리기관명")));     //관리기관전화번호
 
-
-                //여기서 적합 판정을 받은 리스트이므로, 위도, 경도 값을 WeatherService로 보내서 다 확인을 해야한다.
-
-                totalList.add(mineralList.toString());
-
-                System.out.println(i + " : " + mineralList);
-
-                mineralList.clear();
-            }
+                mineralList2.add(sbList[i].substring(sbList[i].indexOf(category[0]) + 7, sbList[i].indexOf("\",\"소재지도로명주소"))); //약수터명
+                mineralList2.add(sbList[i].substring(sbList[i].indexOf(category[1]) + 10, sbList[i].indexOf("\",\"위도")));            //소재지지번주소
+                mineralList2.add(sbList[i].substring(sbList[i].indexOf(category[2]) + 5, sbList[i].indexOf("\",\"경도")));            //위도
+                mineralList2.add(sbList[i].substring(sbList[i].indexOf(category[3]) + 5, sbList[i].indexOf("\",\"지정일자")));       //경도
+                mineralList2.add(sbList[i].substring(sbList[i].indexOf(category[4]) + 11, sbList[i].indexOf("\",\"부적합항목")));       //수질검사결과구분
+                mineralList2.add(sbList[i].substring(sbList[i].indexOf(category[5]) + 8, sbList[i].indexOf("\",\"관리기관전화번호")));     //부적합항목
+                mineralList2.add(sbList[i].substring(sbList[i].indexOf(category[6]) + 11, sbList[i].indexOf("\",\"관리기관명")));     //관리기관전화번호
         }
 
-        System.out.println(totalList);
+        //System.out.println(mineralList2);
     }
+
+
+
+
 
 
     //WaterService 결과 약수터 별 기상 정보와 우선순위를 담아오는 부분
@@ -276,5 +261,6 @@ public class WaterService {
     public void WaterServiceClear(){
         mineralSpringResult.clear();
         totalList.clear();
+        mineralList2.clear();
     }
 }
