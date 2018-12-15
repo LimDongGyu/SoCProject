@@ -32,7 +32,7 @@ public class MineralSpringController {
     @RequestMapping("/AsLocation")
     public void getMineralSpring(@RequestParam(name = "location", required=true, defaultValue = "충청남도 천안시") String location,
                                  @RequestParam(name="time", required = true ,defaultValue = "0000") String time,
-                                 @RequestParam(name="date", required = true, defaultValue = "20181213") String date) throws IOException
+                                 @RequestParam(name="date", required = true, defaultValue = "20181215") String date) throws IOException
     {
         System.out.println("Testing GET METHOD -----/MineralSpring ");
 

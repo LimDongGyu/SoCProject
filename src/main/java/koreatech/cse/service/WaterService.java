@@ -24,13 +24,17 @@ public class WaterService {
     @Inject
     WeatherService weatherService;
 
+
+    List<String> mineralSpringResult = new ArrayList<String>();
+
+
     public void getWater(String location, String date, String time) throws IOException {
 
         StringBuilder urlBuilder = new StringBuilder("http://api.data.go.kr/openapi/appn-mnrlsp-info-std"); /*URL*/
 
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + water_service_key); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("s_page", "UTF-8") + "=" + URLEncoder.encode("0", "UTF-8")); /*조회 시작 지점*/
-        urlBuilder.append("&" + URLEncoder.encode("s_list", "UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 번에 조회될 최대 row 갯수*/
+        urlBuilder.append("&" + URLEncoder.encode("s_list", "UTF-8") + "=" + URLEncoder.encode("5", "UTF-8")); /*한 번에 조회될 최대 row 갯수*/
         urlBuilder.append("&" + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*XML/JSON 여부*/
         urlBuilder.append("&" + URLEncoder.encode("instt_nm", "UTF-8") + "=" + URLEncoder.encode(location, "UTF-8")); /*제공기관명*/
 
@@ -163,15 +167,12 @@ public class WaterService {
 
                     //System.out.println("x : " + x + ", y : " + y);
 
-                    weatherService.getWeather(x, y, date, time);
+
+                    //TODO  WaterService 결과 약수터 별 기상 정보와 우선순위를 담아오는 부분
+                    getWeatherServiceCall(x, y, date, time);
+
 
                 }
-                //null처리 때문에 그런듯
-//
-//                weatherService.getWeather((int)Double.parseDouble(mineralList.get(2))
-//                , (int)Double.parseDouble(mineralList.get(3))
-//                , date, time);
-
 
                 mineralList.clear();
             }
@@ -520,9 +521,23 @@ public class WaterService {
         }
 
         System.out.println(totalList);
-
-
-
-
     }
+
+
+    //WaterService 결과 약수터 별 기상 정보와 우선순위를 담아오는 부분
+    public void getWeatherServiceCall(int x, int y, String date, String time) throws IOException {
+        weatherService.getWeather(x, y, date, time);
+
+        mineralSpringResult.add(weatherService.list.toString());
+        mineralSpringResult.add(Double.toString(weatherService.priority));
+
+        weatherService.weatherServiceClear();
+
+        System.out.println("getWeatherServiceCall : "+ mineralSpringResult.toString());
+    }
+
+
+    //우선순위 비교하는 부분
+
+
 }

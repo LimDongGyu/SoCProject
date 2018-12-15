@@ -19,18 +19,22 @@ public class WeatherService{
     @Value("${weather.service.key}")
     String weather_service_key;
 
+    double priority = 0;
+    List<String> list = new ArrayList<String>();
+
+
     //인자로 x, y값, time, date을 받는다.
     public void getWeather(int x, int y, String date, String time) throws IOException {
         System.out.println("Testing GET METHOD -----/weather ");
 
 //        String str = URLEncoder.encode()
 
-//        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib";      /* 초단기 실황*/
+        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastGrib";      /* 초단기 실황*/
 //        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastTimeData";  /* 초단기예보조회 */
-        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData";   /* 동네예보조회 -> numOfRows=11 로 설정하면 됨*/
+//        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData";   /* 동네예보조회 -> numOfRows=11 로 설정하면 됨*/
 
         strUrl += "?serviceKey=" + weather_service_key;
-        strUrl += "&base_date="+ date;                                 /*발표일자*/
+        strUrl += "&base_date="+ date;                                   /*발표일자*/
         strUrl += "&base_time=" + time;                                     /*발표시각*/
         strUrl += "&nx=" + x;                                              /*예보지점 X 좌표*/
         strUrl += "&ny=" + y;                                             /*예보지점 Y 좌표*/
@@ -132,7 +136,6 @@ public class WeatherService{
 //        }
 
 
-        List<String> list = new ArrayList<String>();
 
 
 //        //출력 값 정리
@@ -155,6 +158,7 @@ public class WeatherService{
 
         /* 동네예보 */
         //차례대로, 강수확률, 강수형태, 습도, 하늘상태, 3시간 기온, 풍속(동서), 풍향, 풍속(남북), 풍속, 6시간 강수량
+        /*
         String[] category = new String[]{"\"POP","\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
 
         String targetResult = "";
@@ -180,35 +184,91 @@ public class WeatherService{
         }
 
         System.out.println(list);
-
+        */
 
 
         //TODO 지우면 디짐
         /* 초단기 예보 */
-//        String[] category = new String[]{"\"POP", "\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
-//
-//        String targetResult = null;
-//
-//        System.out.println("result : " + result);
-//
-//        for (int i = 0; i <= 9; i++) {
-//
-//            if (result.indexOf(category[i]) == -1) {
-//                continue;
-//            } else {
-//                targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
-//                System.out.println("targetResult : " + targetResult);
-//
-//                System.out.println(targetResult.substring(1, 4));
-//                list.add(targetResult.substring(1, 4));
-//
-//                targetResult = targetResult.substring(targetResult.indexOf("obsrValue"), targetResult.length());
-//                list.add(targetResult.substring(11, targetResult.length()));
-//            }
-//        }
+        String[] category = new String[]{"\"POP", "\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
 
-       // System.out.println(list);
+        String targetResult = "";
+
+//        System.out.println("result : " + result);
+
+        for (int i = 0; i <= 9; i++) {
+
+            if (result.indexOf(category[i]) == -1) {
+                continue;
+            } else {
+                targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
+
+//                System.out.println("targetResult : " + targetResult);
+//                System.out.println(targetResult.substring(1, 4));
+
+                list.add(targetResult.substring(1, 4));
+
+                targetResult = targetResult.substring(targetResult.indexOf("obsrValue"), targetResult.length());
+                list.add(targetResult.substring(11, targetResult.length()));
+            }
+        }
+
+        System.out.println(list);
+
+
+        //TODO 우선순위 설정하는 부분
+        //강수확률, 강수형태, 습도, 하늘상태, 3시간 기온, 풍속(동서), 풍향, 풍속(남북), 풍속, 6시간 강수량
+        //String[] category = new String[]{"\"POP", "\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
+
+        for(int i = 0; i < list.size()/2; i++){
+            System.out.println(i + " : " + priority);
+            switch (list.get(i*2)){
+                case "POP":
+                    priority += Double.parseDouble(list.get(i*2+1));
+                    System.out.println(priority);
+                    continue;
+                case "PTY":
+                    priority += Double.parseDouble(list.get(i*2+1));
+                    System.out.println(priority);
+                    continue;
+                case "REH":
+                    priority += Double.parseDouble(list.get(i*2+1));
+                    System.out.println(priority);
+                    continue;
+                case "SKY":
+                    priority += Double.parseDouble(list.get(i*2+1));
+                    System.out.println(priority);
+                    continue;
+                case "T3H":
+                    priority += Double.parseDouble(list.get(i*2+1));
+                    System.out.println(priority);
+                    continue;
+//                case "UUU":
+//                    priority += Double.parseDouble(list.get(i*2+1));
+//                    System.out.println(priority);
+//                case "VEC":
+//                    priority += Double.parseDouble(list.get(i*2+1));
+//                    System.out.println(priority);
+//                case "VVV":
+//                    priority += Double.parseDouble(list.get(i*2+1));
+//                    System.out.println(priority);
+                case "WSD":
+                    priority += Double.parseDouble(list.get(i*2+1));
+                    System.out.println(priority);
+                    continue;
+                case "R06":
+                    priority += Double.parseDouble(list.get(i*2+1));     /* 6시간 강수량 */
+                    System.out.println(priority);
+                    continue;
+            }
+
+            System.out.println("priority : " + priority);
+        }
     }
 
-//        System.out.println(list.get(1));
+
+
+    public void weatherServiceClear(){
+        priority = 0;
+        list.clear();
+    }
 }
