@@ -1,13 +1,17 @@
 package koreatech.cse.controller;
 
+import koreatech.cse.domain.MineralSpring.MineralAsSpring;
+import koreatech.cse.domain.MineralSpring.MineralSpring;
+import koreatech.cse.domain.rest.Temperature;
 import koreatech.cse.domain.weather.Weather;
 import koreatech.cse.service.WaterService;
 import koreatech.cse.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -19,49 +23,137 @@ import java.net.URLEncoder;
 @RestController
 @RequestMapping("/MineralSpring")
 public class MineralSpringController {
+
     @Inject
     WaterService waterService;
+
     @Inject
     WeatherService weatherService;
 
-    // 요청메소드 예상
-    // http://localhost:8080/MineralSpring?location=강원도 수원시&time=0300
+
+    MineralSpring mineralSpring = new MineralSpring();
+    MineralAsSpring mineralAsSpring = new MineralAsSpring();
 
 
-    //TODO 20181213 파라미터 값으로 날짜도 받아와야 함, 또, 약수터?시간,날짜,약수터이름 포맷도 만들어야 함
-    @RequestMapping("/AsLocation")
-    public void getMineralSpring(@RequestParam(name = "location", required=true, defaultValue = "충청남도 천안시") String location,
+
+
+    //TODO 가장 우선순위 높은 것만 추천
+    @RequestMapping(value="/AsLocation", method = RequestMethod.GET, produces = "application/json")
+    public MineralSpring getMineralSpring(
+                                 @RequestParam(name="location", required=true, defaultValue = "충청남도 천안시") String location,
                                  @RequestParam(name="time", required = true ,defaultValue = "0000") String time,
-                                 @RequestParam(name="date", required = true, defaultValue = "20181213") String date) throws IOException
+                                 @RequestParam(name="date", required = true, defaultValue = "20181215") String date) throws IOException
     {
         System.out.println("Testing GET METHOD -----/MineralSpring ");
+//
+//        System.out.println(time);
+//        System.out.println(location);
 
-        System.out.println(time);
-        System.out.println(location);
-
-
-        //waterService에는 인자로 location
-        //waterService.getWater(location);
         waterService.getWater(location, date, time);
 
-        //waterService에서 x, y 좌표에 해당하는 값을 반환해주는 리스트를 담아와야 함
-        //weatherService에는 인자로 waterService에서 받아온 위도, 경도 그리고 사용자 입력으로 받은 time 정보를 입력해주면 된다.
-        //weatherService.getWeather(int x, int y, time);
-        //weatherService.getWeather();
 
-        //재가공
-        //나중에 MineralSpringService에서 처리해도 되고 여기서 처리해도 됨
+//        //걸러낼 부분, 우선순위 내용까지 출력한다.
+//        System.out.println(waterService.totalList);
+//        System.out.println(waterService.mineralSpringResult);
 
+
+        //만약, 추천 개수에 따라서 여기서 처리해주면 될 듯
+
+        //waterService에서 출력된 내용 자르기
+        String[] waterArray = waterService.totalList.get(0).split(", ");
+
+        waterArray[0] = waterArray[0].substring(1, waterArray[0].length());
+        waterArray[waterArray.length-1] = waterArray[waterArray.length-1].substring(0, waterArray[waterArray.length-1].length()-1);
+
+//        for(int i=0; i < waterArray.length; i++){
+//            System.out.println(i + " : " + waterArray[i]);
+//        }
+
+
+
+
+
+        double max = -9999;
+        int cnt=0;
+
+        //우선순위 비교하는 부분 여기에 들어가야 한다.
+        for(int i=0; i < waterService.mineralSpringResult.size()-1; i =i+2){
+            if(max < Double.parseDouble(waterService.mineralSpringResult.get(i+1))){
+                max = Double.parseDouble(waterService.mineralSpringResult.get(i+1));
+                cnt = i;
+            }
+        }
+
+        //최고 우선순위 1개
+        System.out.println("최고 우선순위 [" + cnt + "] : " + waterService.mineralSpringResult.get(cnt) + ", priority : " + waterService.mineralSpringResult.get(cnt+1));
+
+
+
+        //weatherService내용 자르기
+//        System.out.println(waterService.mineralSpringResult.get(0));
+//        System.out.println(waterService.mineralSpringResult.get(1));
+
+
+        String[] weatherArray = waterService.mineralSpringResult.get(cnt).split(", ");
+
+        weatherArray[0] = weatherArray[0].substring(1, weatherArray[0].length());
+        weatherArray[weatherArray.length-1] = weatherArray[weatherArray.length-1].substring(0, weatherArray[weatherArray.length-1].length()-1);
+
+//        for(int i=0; i < weatherArray.length; i++){
+//            System.out.println(i + " : " + weatherArray[i]);
+//        }
+
+
+
+        // mineralSpring 객체 -> JSON 변환
+
+        mineralSpring.setSpringName(waterArray[0]);
+        mineralSpring.setSpringAddress(waterArray[1]);
+        mineralSpring.setFitness(waterArray[4]);
+        mineralSpring.setDepartment_number(waterArray[6]);
+
+
+//        System.out.println("mineralSpring toString() : ");
+//        System.out.println(mineralSpring.toString());
+
+
+        weatherService.weatherServiceClear();
+        waterService.WaterServiceClear();
+
+
+        return mineralSpring;
 
     }
 
 
-    @RequestMapping("/AsSpring")
-    public void getMineralSpringAsSpringName(@RequestParam(name = "AsSpring", required=true, defaultValue = "흑성산약수터") String AsSpring,
+
+    //TODO 약수터 이름으로 부적합, 적합 판정
+    @RequestMapping(value="/AsSpring", method = RequestMethod.GET, produces = "application/json")
+    public MineralAsSpring getMineralSpringAsSpringName(@RequestParam(name="AsSpring", required=true, defaultValue = "흑성산약수터") String AsSpring,
                                              @RequestParam(name="time", required = true ,defaultValue = "0000") String time,
-                                             @RequestParam(name="date", required = true, defaultValue = "20181213") String date) throws IOException {
+                                             @RequestParam(name="date", required = true, defaultValue = "20181215") String date) throws IOException {
 
         waterService.getWater2(AsSpring);
 
+        //System.out.println(waterService.mineralList2.toString());
+
+
+        mineralAsSpring.setSpringName(waterService.mineralList2.get(0));
+        mineralAsSpring.setSpringAddress(waterService.mineralList2.get(1));
+        mineralAsSpring.setFitness(waterService.mineralList2.get(4));
+
+        if(waterService.mineralList2.get(5).equals("")){
+            mineralAsSpring.setFitness_explain("내용 없음");
+        }else{
+            mineralAsSpring.setFitness_explain(waterService.mineralList2.get(5));
+        }
+
+        mineralAsSpring.setDepartment_number(waterService.mineralList2.get(6));
+
+
+        weatherService.weatherServiceClear();
+        waterService.WaterServiceClear();
+
+        return mineralAsSpring;
     }
 }
