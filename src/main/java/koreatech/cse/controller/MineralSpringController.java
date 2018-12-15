@@ -42,7 +42,7 @@ public class MineralSpringController {
     public MineralSpring getMineralSpring(
                                  @RequestParam(name="location", required=true, defaultValue = "충청남도 천안시") String location,
                                  @RequestParam(name="time", required = true ,defaultValue = "0000") String time,
-                                 @RequestParam(name="date", required = true, defaultValue = "20181215") String date) throws IOException
+                                 @RequestParam(name="date", required = true, defaultValue = "20181216") String date) throws IOException
     {
         System.out.println("Testing GET METHOD -----/MineralSpring ");
 //
@@ -131,7 +131,7 @@ public class MineralSpringController {
     @RequestMapping(value="/AsSpring", method = RequestMethod.GET, produces = "application/json")
     public MineralAsSpring getMineralSpringAsSpringName(@RequestParam(name="AsSpring", required=true, defaultValue = "흑성산약수터") String AsSpring,
                                              @RequestParam(name="time", required = true ,defaultValue = "0000") String time,
-                                             @RequestParam(name="date", required = true, defaultValue = "20181215") String date) throws IOException {
+                                             @RequestParam(name="date", required = true, defaultValue = "20181216") String date) throws IOException {
 
         waterService.getWater2(AsSpring);
 
