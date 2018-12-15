@@ -3,6 +3,7 @@ package koreatech.cse.domain.rest;
 import java.sql.Date;
 
 public class Temperature {
+
     private int id;
     private String sensorId;
     private float temperature;
