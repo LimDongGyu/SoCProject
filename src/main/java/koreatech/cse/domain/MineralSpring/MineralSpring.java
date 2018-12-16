@@ -7,7 +7,16 @@ public class MineralSpring {
     private String springAddress;                 //약수터주소
     private String fitness;                       //적합도
     private String department_number;             //관리부서 번호
+    private String result;                        //추천 결과
 
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
 
     public String getSpringName() {
         return springName;
@@ -48,6 +57,7 @@ public class MineralSpring {
                 ", springAddress='" + springAddress + '\'' +
                 ", fitness='" + fitness + '\'' +
                 ", department_number='" + department_number + '\'' +
+                ", result='" + result + '\'' +
                 '}';
     }
 }
