@@ -35,7 +35,7 @@ public class WaterService {
 
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + water_service_key); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("s_page", "UTF-8") + "=" + URLEncoder.encode("0", "UTF-8")); /*조회 시작 지점*/
-        urlBuilder.append("&" + URLEncoder.encode("s_list", "UTF-8") + "=" + URLEncoder.encode("5", "UTF-8")); /*한 번에 조회될 최대 row 갯수*/
+        urlBuilder.append("&" + URLEncoder.encode("s_list", "UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 번에 조회될 최대 row 갯수*/
         urlBuilder.append("&" + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*XML/JSON 여부*/
         urlBuilder.append("&" + URLEncoder.encode("instt_nm", "UTF-8") + "=" + URLEncoder.encode(location, "UTF-8")); /*제공기관명*/
 
