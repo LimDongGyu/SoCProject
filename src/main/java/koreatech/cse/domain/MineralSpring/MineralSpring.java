@@ -8,6 +8,19 @@ public class MineralSpring {
     private String fitness;                       //적합도
     private String department_number;             //관리부서 번호
 
+    @Override
+    public String toString() {
+        return "MineralSpring{" +
+                "springName='" + springName + '\'' +
+                ", springAddress='" + springAddress + '\'' +
+                ", fitness='" + fitness + '\'' +
+                ", department_number='" + department_number + '\'' +
+                ", result='" + result + '\'' +
+                '}';
+    }
+
+    private String result;
+
 
     public String getSpringName() {
         return springName;
@@ -41,13 +54,12 @@ public class MineralSpring {
         this.department_number = department_number;
     }
 
-    @Override
-    public String toString() {
-        return "MineralSpring{" +
-                "springName='" + springName + '\'' +
-                ", springAddress='" + springAddress + '\'' +
-                ", fitness='" + fitness + '\'' +
-                ", department_number='" + department_number + '\'' +
-                '}';
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 }
