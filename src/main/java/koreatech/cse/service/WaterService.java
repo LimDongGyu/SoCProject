@@ -35,7 +35,7 @@ public class WaterService {
 
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + water_service_key); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("s_page", "UTF-8") + "=" + URLEncoder.encode("0", "UTF-8")); /*조회 시작 지점*/
-        urlBuilder.append("&" + URLEncoder.encode("s_list", "UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 번에 조회될 최대 row 갯수*/
+        urlBuilder.append("&" + URLEncoder.encode("s_list", "UTF-8") + "=" + URLEncoder.encode("5", "UTF-8")); /*한 번에 조회될 최대 row 갯수*/
         urlBuilder.append("&" + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*XML/JSON 여부*/
         urlBuilder.append("&" + URLEncoder.encode("instt_nm", "UTF-8") + "=" + URLEncoder.encode(location, "UTF-8")); /*제공기관명*/
 
@@ -157,7 +157,11 @@ public class WaterService {
     }
 
 
-    public void getWater2(String asSpring, String date, String time) throws IOException {
+
+
+
+
+    public void getWater2(String asSpring) throws IOException {
 
         StringBuilder urlBuilder = new StringBuilder("http://api.data.go.kr/openapi/appn-mnrlsp-info-std"); /*URL*/
 
@@ -232,48 +236,17 @@ public class WaterService {
                 mineralList2.add(sbList[i].substring(sbList[i].indexOf(category[6]) + 11, sbList[i].indexOf("\",\"관리기관명")));     //관리기관전화번호
         }
 
-        //위도, 경도 값이 없어서 조회가 안됨. 처리해야함
-        if(mineralList2.get(2).equals("") || mineralList2.get(2).equals("")){
-            mineralList2.add("위도, 경도 값이 없어 기상 정보 조회가 불가능합니다.");
-        }else{
-            String test;
-            int x, y;
-
-            test = mineralList2.get(2);
-            x = (int)Double.parseDouble(test);
-
-            test = mineralList2.get(3);
-            y = (int)Double.parseDouble(test);
-
-            getWeatherServiceCall2(x, y, date, time);
-        }
-
-        //mineralSpringResult에 담긴 내용 정보를 가지고 우선순위 매기고, 최종 결과를 담아야하는 부분이다.
-        //이 담긴 순서가 totalList의 순서와 같으므로 최종적으로 결과를 제공하려면 반환을 totalList + mineralSpringResult 값을 제공한다.
-        System.out.println("mineralList2 : " + mineralList2);
-        System.out.println("mineralSpringResult : " + mineralSpringResult);
+        //System.out.println(mineralList2);
     }
+
+
+
+
 
 
     //WaterService 결과 약수터 별 기상 정보와 우선순위를 담아오는 부분
     public void getWeatherServiceCall(int x, int y, String date, String time) throws IOException {
         weatherService.getWeather(x, y, date, time);
-
-        mineralSpringResult.add(weatherService.list.toString());
-        mineralSpringResult.add(Double.toString(weatherService.priority));
-
-        weatherService.weatherServiceClear();
-
-        //System.out.println("getWeatherServiceCall : "+ mineralSpringResult.toString());
-    }
-
-
-
-    //WaterService 결과 약수터 별 기상 정보와 우선순위를 담아오는 부분
-    public void getWeatherServiceCall2(int x, int y, String date, String time) throws IOException {
-
-//        weatherService.getWeather(x, y, date, time);
-        weatherService.getWeather(55, 127, date, time);
 
         mineralSpringResult.add(weatherService.list.toString());
         mineralSpringResult.add(Double.toString(weatherService.priority));

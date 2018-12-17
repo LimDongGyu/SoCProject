@@ -2,7 +2,6 @@ package koreatech.cse.controller.rest;
 
 import koreatech.cse.domain.rest.*;
 import koreatech.cse.domain.weather.Weather;
-import koreatech.cse.repository.TemperatureMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,15 +40,10 @@ public class WeatherController {
 //        String strUrl = "http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData";   /* 동네예보조회 -> numOfRows=11 로 설정하면 됨*/
 
         strUrl += "?serviceKey=" + weather_service_key;
-        strUrl += "&base_date=20181211";                                 /*발표일자*/
-        strUrl += "&base_time=2100";                                     /*발표시각*/
-
-
-
+        strUrl += "&base_date=20181212";                                 /*발표일자*/
+        strUrl += "&base_time=0300";                                     /*발표시각*/
         strUrl += "&nx=55";                                              /*예보지점 X 좌표*/
         strUrl += "&ny=127";                                             /*예보지점 Y 좌표*/
-
-
         strUrl += "&pageNo=1";
         strUrl += "&numOfRows=11";
         strUrl += "&_type=json";
@@ -109,8 +103,6 @@ public class WeatherController {
           | 9이상 14미만  |    강    | 나무가지와 깃발이 가볍게 흔들림
           |   14이상     |   매우강  | 먼지가 일고, 작은 나무 전체가 흔들림
           ---------------------------------------------------*/
-
-
 
 
         System.out.println(strUrl);
@@ -219,7 +211,6 @@ public class WeatherController {
             if(result.indexOf(category[i]) == -1){
                 continue;
             }
-
             else{
                 targetResult = result.substring(result.indexOf(category[i]), (result.substring(result.indexOf(category[i])).indexOf("}") + result.indexOf(category[i])));
                 System.out.println("targetResult : " + targetResult);

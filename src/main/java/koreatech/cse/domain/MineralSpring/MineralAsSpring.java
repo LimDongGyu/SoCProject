@@ -7,16 +7,6 @@ public class MineralAsSpring {
         private String fitness;                       //적합도
         private String fitness_explain;               //부적합이유
         private String department_number;             //관리부서 번호
-        private String result;                        //추천 결과
-
-        public String getResult() {
-            return result;
-        }
-
-        public void setResult(String result) {
-            this.result = result;
-        }
-
 
 
         public String getSpringName() {
@@ -67,7 +57,6 @@ public class MineralAsSpring {
                 ", fitness='" + fitness + '\'' +
                 ", fitness_explain='" + fitness_explain + '\'' +
                 ", department_number='" + department_number + '\'' +
-                ", result='" + result + '\'' +
                 '}';
     }
 }

@@ -35,12 +35,14 @@ public class MineralSpringController {
     MineralAsSpring mineralAsSpring = new MineralAsSpring();
 
 
+
+
     //TODO 가장 우선순위 높은 것만 추천
     @RequestMapping(value="/AsLocation", method = RequestMethod.GET, produces = "application/json")
     public MineralSpring getMineralSpring(
                                  @RequestParam(name="location", required=true, defaultValue = "충청남도 천안시") String location,
-                                 @RequestParam(name="time", required = true ,defaultValue = "1200") String time,
-                                 @RequestParam(name="date", required = true, defaultValue = "20181217") String date) throws IOException
+                                 @RequestParam(name="time", required = true ,defaultValue = "0000") String time,
+                                 @RequestParam(name="date", required = true, defaultValue = "20181216") String date) throws IOException
     {
         System.out.println("Testing GET METHOD -----/MineralSpring ");
 //
@@ -67,6 +69,10 @@ public class MineralSpringController {
 //            System.out.println(i + " : " + waterArray[i]);
 //        }
 
+
+
+
+
         double max = -9999;
         int cnt=0;
 
@@ -80,6 +86,7 @@ public class MineralSpringController {
 
         //최고 우선순위 1개
         System.out.println("최고 우선순위 [" + cnt + "] : " + waterService.mineralSpringResult.get(cnt) + ", priority : " + waterService.mineralSpringResult.get(cnt+1));
+
 
 
         //weatherService내용 자르기
@@ -97,6 +104,7 @@ public class MineralSpringController {
 //        }
 
 
+
         // mineralSpring 객체 -> JSON 변환
 
         mineralSpring.setSpringName(waterArray[0]);
@@ -104,17 +112,6 @@ public class MineralSpringController {
         mineralSpring.setFitness(waterArray[4]);
         mineralSpring.setDepartment_number(waterArray[6]);
 
-
-        //우선순위 결과
-        if(Double.parseDouble(waterService.mineralSpringResult.get(cnt+1)) >= 300){
-            mineralSpring.setResult("추천");
-        }else if(Double.parseDouble(waterService.mineralSpringResult.get(cnt+1)) >= 0 && Double.parseDouble(waterService.mineralSpringResult.get(cnt+1)) < 300){
-            mineralSpring.setResult("보통");
-        }else if(Double.parseDouble(waterService.mineralSpringResult.get(cnt+1)) >= 0 && Double.parseDouble(waterService.mineralSpringResult.get(cnt+1)) < 300){
-            mineralSpring.setResult("비추천");
-        }else{
-            mineralSpring.setResult("금지");
-        }
 
 //        System.out.println("mineralSpring toString() : ");
 //        System.out.println(mineralSpring.toString());
@@ -125,17 +122,21 @@ public class MineralSpringController {
 
 
         return mineralSpring;
+
     }
 
 
 
     //TODO 약수터 이름으로 부적합, 적합 판정
     @RequestMapping(value="/AsSpring", method = RequestMethod.GET, produces = "application/json")
-    public MineralAsSpring getMineralSpringAsSpringName(@RequestParam(name="springNameEx", required=true, defaultValue = "홍샘약수터") String springNameEx,
-                                             @RequestParam(name="time", required = true ,defaultValue = "1200") String time,
-                                             @RequestParam(name="date", required = true, defaultValue = "20181217") String date) throws IOException {
+    public MineralAsSpring getMineralSpringAsSpringName(@RequestParam(name="AsSpring", required=true, defaultValue = "흑성산약수터") String AsSpring,
+                                             @RequestParam(name="time", required = true ,defaultValue = "0000") String time,
+                                             @RequestParam(name="date", required = true, defaultValue = "20181216") String date) throws IOException {
 
-        waterService.getWater2(springNameEx, date, time);
+        waterService.getWater2(AsSpring);
+
+        //System.out.println(waterService.mineralList2.toString());
+
 
         mineralAsSpring.setSpringName(waterService.mineralList2.get(0));
         mineralAsSpring.setSpringAddress(waterService.mineralList2.get(1));
@@ -149,18 +150,6 @@ public class MineralSpringController {
 
         mineralAsSpring.setDepartment_number(waterService.mineralList2.get(6));
 
-        int size = waterService.mineralSpringResult.size()-1;
-
-        //우선순위 결과
-        if(Double.parseDouble(waterService.mineralSpringResult.get(size)) >= 300){
-            mineralAsSpring.setResult("추천");
-        }else if(Double.parseDouble(waterService.mineralSpringResult.get(size)) >= 0 && Double.parseDouble(waterService.mineralSpringResult.get(size)) < 300){
-            mineralAsSpring.setResult("보통");
-        }else if(Double.parseDouble(waterService.mineralSpringResult.get(size)) >= 0 && Double.parseDouble(waterService.mineralSpringResult.get(size)) < 300){
-            mineralAsSpring.setResult("비추천");
-        }else{
-            mineralAsSpring.setResult("금지");
-        }
 
         weatherService.weatherServiceClear();
         waterService.WaterServiceClear();

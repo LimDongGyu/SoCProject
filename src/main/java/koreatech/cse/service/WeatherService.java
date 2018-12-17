@@ -156,7 +156,7 @@ public class WeatherService{
 
         //TODO 지우면 디짐
         /* 초단기 예보 */
-        String[] category = new String[]{"\"POP", "\"PTY", "\"REH", "\"SKY", "\"T1H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R1N"};
+        String[] category = new String[]{"\"POP", "\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
 
         String targetResult = "";
 
@@ -178,110 +178,56 @@ public class WeatherService{
 
 
         //TODO 우선순위 설정하는 부분
-        //강수확률, 강수형태, 습도, 하늘상태, 1시간 기온, 풍속(동서), 풍향, 풍속(남북), 풍속, 6시간 강수량
-        //String[] category = new String[]{"\"POP", "\"PTY", "\"REH", "\"SKY", "\"T1H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R1N"};
-
-        double getDouble = 0.0;
+        //강수확률, 강수형태, 습도, 하늘상태, 3시간 기온, 풍속(동서), 풍향, 풍속(남북), 풍속, 6시간 강수량
+        //String[] category = new String[]{"\"POP", "\"PTY", "\"REH", "\"SKY", "\"T3H", "\"UUU", "\"VEC", "\"VVV", "\"WSD", "\"R06"};
 
         for(int i = 0; i < list.size()/2; i++){
-            getDouble = Double.parseDouble(list.get(i*2+1));
-
+//            System.out.println(i + " : " + priority);
             switch (list.get(i*2)){
-//                case "POP":
-//                    priority += Double.parseDouble(list.get(i*2+1));
+                case "POP":
+                    priority += Double.parseDouble(list.get(i*2+1));
 //                    System.out.println(priority);
-//                    continue;
+                    continue;
                 case "PTY":
-                    if(getDouble == 0){
-                        priority += 100;
-                    }else if(getDouble == 1){
-                        priority -= 300;
-                    }else if(getDouble == 2){
-                        priority -= 300;
-                    }else if(getDouble == 3){
-                        priority -= 300;
-                    }else{
-                        priority += getDouble;
-                    }
+                    priority += Double.parseDouble(list.get(i*2+1));
+//                    System.out.println(priority);
                     continue;
-
+                case "REH":
+                    priority += Double.parseDouble(list.get(i*2+1));
+//                    System.out.println(priority);
+                    continue;
                 case "SKY":
-                    if(getDouble >= 9 && getDouble <= 10){
-                        priority += 100;
-                    }else if(getDouble >= 6 && getDouble < 9){
-                        priority += 0;
-                    }else if(getDouble >= 3 && getDouble < 6){
-                        priority -= 200;
-                    }else if(getDouble >= 0 && getDouble < 3){
-                        priority -= 300;
-                    }else{
-                        priority += getDouble;
-                    }
+                    priority += Double.parseDouble(list.get(i*2+1));
+//                    System.out.println(priority);
                     continue;
-
-                case "T1H":
-                    if(getDouble >= 35){
-                        priority -= 500;
-                    }else if(getDouble >= 30 && getDouble < 35){
-                        priority -= 300;
-                    }else if(getDouble >= 5 && getDouble < 30){
-                        priority += 300;
-                    }else if(getDouble >= -5 && getDouble < 5){
-                        priority -= 100;
-                    }else{
-                        priority -= 500;
-                    }
+                case "T3H":
+                    priority += Double.parseDouble(list.get(i*2+1));
+//                    System.out.println(priority);
                     continue;
-
-                case "WSD":
-                    if(getDouble >= 14){
-                        priority -= 500;
-                    }else if(getDouble >= 9 && getDouble < 14){
-                        priority -= 300;
-                    }else if(getDouble >= 4 && getDouble < 9){
-                        priority += 0;
-                    }else{
-                        priority += 100;
-                    }
-                    continue;
-
-                case "RN1":
-                    if(getDouble >= 70){
-                        priority -= 2000;
-                    }else if(getDouble >= 40 && getDouble < 70){
-                        priority -= 1400;
-                    }else if(getDouble >= 20 && getDouble < 40){
-                        priority -= 800;
-                    }else if(getDouble >= 10 && getDouble < 20){
-                        priority -= 400;
-                    }else if(getDouble >= 5 && getDouble < 10){
-                        priority -= 200;
-                    }else if(getDouble >= 1 && getDouble < 5){
-                        priority -= 100;
-                    }else{
-                        priority += 0;
-                    }
-                    continue;
-
-
-//                case "REH":
-//                    priority += getDouble;
-//                    continue;
-
 //                case "UUU":
 //                    priority += Double.parseDouble(list.get(i*2+1));
 //                    System.out.println(priority);
-
 //                case "VEC":
 //                    priority += Double.parseDouble(list.get(i*2+1));
 //                    System.out.println(priority);
-
 //                case "VVV":
 //                    priority += Double.parseDouble(list.get(i*2+1));
 //                    System.out.println(priority);
+                case "WSD":
+                    priority += Double.parseDouble(list.get(i*2+1));
+//                    System.out.println(priority);
+                    continue;
+                case "R06":
+                    priority += Double.parseDouble(list.get(i*2+1));     /* 6시간 강수량 */
+//                    System.out.println(priority);
+                    continue;
             }
+
+//            System.out.println("priority : " + priority);
         }
     }
+
+
 
     public void weatherServiceClear(){
         priority = 0;

@@ -31,7 +31,7 @@
     </bean>
     -->
 
-    <!-- H2 -->
+    <!-- H2
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${h2.jdbc.driverClassName}" />
         <property name="url" value="${h2.jdbc.url}" />
@@ -46,8 +46,8 @@
     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
         <jdbc:script location="classpath:initH2.sql" />
     </jdbc:initialize-database>
-
-    <!-- MyBatis -->
+-->
+    <!-- MyBatis
     <mybatis:scan base-package="koreatech.cse.repository" />
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
@@ -60,5 +60,5 @@
     </bean>
 
     <aop:aspectj-autoproxy />
-    <bean id="userServiceAspect" class="koreatech.cse.aop.AopTester" />
+    <bean id="userServiceAspect" class="koreatech.cse.aop.AopTester" />-->
 </beans>
