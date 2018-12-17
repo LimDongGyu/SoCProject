@@ -1,37 +1,45 @@
+<!Document html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<html>
+<%@include file="template.jsp"%>
+
+
+
 <head>
     <title>here is index</title>
+    <link rel="stylesheet" href="../resources/CSS/bootstrap.min.css" />
 </head>
-<body>
-main page
+<body >
 
-
-<select onchange="categoryChange(this)">
+<form>
+    <div class="justify-content-md-center">
+            <div class="col-sm-10">
+                <select class="form-control" id ="province" onchange="categoryChange(this)" >
     <option>시/도 선택</option>
-    <option value="서울특별시">서울특별시</option>
-    <option value="인천광역시">인천광역시</option>
-    <option value="대전광역시">대전광역시</option>
-    <option value="광주광역시">광주광역시</option>
-    <option value="대구광역시">대구광역시</option>
-    <option value="울산광역시">울산광역시</option>
-    <option value="부산광역시">부산광역시</option>
-    <option value="경기도">경기도</option>
-    <option value="강원도">강원도</option>
-    <option value="충청북도">충청북도</option>
-    <option value="충청남도">충청남도</option>
-    <option value="전라북도">전라북도</option>
-    <option value="전라남도">전라남도</option>
-    <option value="경상북도">경상북도</option>
-    <option value="경상남도">경상남도</option>
-    <option value="제주도">제주도</option>
+    <option value="서울특별시 ">서울특별시</option>
+    <option value="인천광역시 ">인천광역시</option>
+    <option value="대전광역시 ">대전광역시</option>
+    <option value="광주광역시 ">광주광역시</option>
+    <option value="대구광역시 ">대구광역시</option>
+    <option value="울산광역시 ">울산광역시</option>
+    <option value="부산광역시 ">부산광역시</option>
+    <option value="경기도 ">경기도</option>
+    <option value="강원도 ">강원도</option>
+    <option value="충청북도 ">충청북도</option>
+    <option value="충청남도 ">충청남도</option>
+    <option value="전라북도 ">전라북도</option>
+    <option value="전라남도 ">전라남도</option>
+    <option value="경상북도 ">경상북도</option>
+    <option value="경상남도 ">경상남도</option>
+    <option value="제주도 ">제주도</option>
+    <script>var province = document.getElementById("province");</script>
 </select>
 
-<select id="city">
+<select class="form-control" id="city">
     <option>시군구를 선택해 주세요</option>
 </select>
 <script>
+    var link_url = null;
     function categoryChange(e) {
     var _seoul   = ["강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"];
     var _incheon = ["계양구","남구","남동구","동구","부평구","서구","연수구","중구","강화군","옹진군"];
@@ -52,25 +60,28 @@ main page
     var target = document.getElementById("city");
 
 
-    if(e.value == "서울특별시") var d = _seoul;
-    else if(e.value == "인천광역시") var d = _incheon ;
-    else if(e.value == "대전광역시")var  d = _daejeon ;
-    else if(e.value == "광주광역시")var  d = _gwangju ;
-    else if(e.value == "대구광역시")var  d = _daegu   ;
-    else if(e.value == "울산광역시") var d = _ulsan   ;
-    else if(e.value == "경기도") var d = _gyunggi ;
-    else if(e.value == "강원도") var d = _gangwon ;
-    else if(e.value == "충청북도")var d = _chungbuk;
-    else if(e.value == "충청남도") var d = _chungnam;
-    else if(e.value == "전라북도") var d = _jeonbuk ;
-    else if(e.value == "전라남도") var d = _jeonnam ;
-    else if(e.value == "경상북도")var d = _kyungbuk;
-    else if(e.value == "경상남도")var d = _kyungnam;
-    else if(e.value == "제주도") var d = _jeju    ;
-    else if(e.value == "부산광역시   ") var d = _busan   ;
+    if(e.value == "서울특별시 ") var d = _seoul;
+    else if(e.value == "인천광역시 ") var d = _incheon ;
+    else if(e.value == "대전광역시 ")var  d = _daejeon ;
+    else if(e.value == "광주광역시 ")var  d = _gwangju ;
+    else if(e.value == "대구광역시 ")var  d = _daegu   ;
+    else if(e.value == "울산광역시 ") var d = _ulsan   ;
+    else if(e.value == "경기도 ") var d = _gyunggi ;
+    else if(e.value == "강원도 ") var d = _gangwon ;
+    else if(e.value == "충청북도 ")var d = _chungbuk;
+    else if(e.value == "충청남도 ") var d = _chungnam;
+    else if(e.value == "전라북도 ") var d = _jeonbuk ;
+    else if(e.value == "전라남도 ") var d = _jeonnam ;
+    else if(e.value == "경상북도 ")var d = _kyungbuk;
+    else if(e.value == "경상남도 ")var d = _kyungnam;
+    else if(e.value == "제주도 ") var d = _jeju    ;
+    else if(e.value == "부산광역시 ") var d = _busan   ;
 
     target.options.length = 0;
-    console.log(e.value);
+    city.current
+    console.log(d.value);
+
+
 
     for (x in d) {
         var opt = document.createElement("option");
@@ -78,10 +89,31 @@ main page
         opt.innerHTML = d[x];
         target.appendChild(opt);
     }
-}</script>
+        //위치
+        var Location = province.options[province.selectedIndex].value + target.options[target.selectedIndex].value;
 
-<button onclick = <select id="city" onfocus="categoryChange()" /> 찾기 </button>
+        //날짜
+        var doc = new Date();
+        if(doc.getMonth()<9 && doc.getTime()!=00 ){
+            var date = doc.getFullYear().toString()+"0"+(doc.getMonth()+1).toString()+doc.getDate().toString();
+        }
+        else  var date = doc.getFullYear().toString()+(doc.getMonth()+1).toString()+doc.getDate().toString();
 
+        if(doc.getHours()-1<10 && doc.getHours() != 0) {
+            var time = "0"+(doc.getHours()-1).toString() + "30";
+        }else var time = (doc.getHours()-1).toString() + "30";
 
+        link_url = "/MineralSpring/AsLocation?location="+Location.toString()+"&time="+time.toString()+"&date="+date.toString();
+
+    }
+    function go(){
+        window.location.href = link_url;
+    }
+</script>
+                <a href="javascript:void(0);" onclick="go(); return false;"> <button class="btn btn-info"role="button"> 찾기 </button> </a>
+        </div>
+    </div>
+</div>
+</form>
 </body>
 </html>

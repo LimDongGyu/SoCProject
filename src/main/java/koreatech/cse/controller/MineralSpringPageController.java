@@ -11,7 +11,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -21,8 +25,8 @@ import java.net.URLEncoder;
 
 
 @RestController
-@RequestMapping("/MineralSpring")
-public class MineralSpringController {
+@RequestMapping("/MineralSpring/Page")
+public class MineralSpringPageController {
 
     @Inject
     WaterService waterService;
@@ -38,11 +42,11 @@ public class MineralSpringController {
 
 
     //TODO 가장 우선순위 높은 것만 추천
-    @RequestMapping(value="/AsLocation", method = RequestMethod.GET, produces = "application/json")
-    public MineralSpring getMineralSpring(
-                                 @RequestParam(name="location", required=true, defaultValue = "충청남도 천안시") String location,
-                                 @RequestParam(name="time", required = true ,defaultValue = "0000") String time,
-                                 @RequestParam(name="date", required = true, defaultValue = "20181216") String date) throws IOException
+    @RequestMapping(value="/AsLocation", method = RequestMethod.GET)
+    public String getMineralSpring(Model model,
+            @RequestParam(name="location", required=true, defaultValue = "충청남도 천안시") String location,
+                                          @RequestParam(name="time", required = true ,defaultValue = "0000") String time,
+                                          @RequestParam(name="date", required = true, defaultValue = "20181216") String date) throws IOException
     {
         System.out.println("Testing GET METHOD -----/MineralSpring ");
 //
@@ -111,6 +115,12 @@ public class MineralSpringController {
         mineralSpring.setSpringAddress(waterArray[1]);
         mineralSpring.setFitness(waterArray[4]);
         mineralSpring.setDepartment_number(waterArray[6]);
+        model.addAttribute("springName", waterArray[0]);
+        model.addAttribute("springAddress", waterArray[1]);
+        model.addAttribute("Fitness", waterArray[4]);
+        model.addAttribute("department_number", waterArray[6]);
+
+
 
 
 //        System.out.println("mineralSpring toString() : ");
@@ -122,17 +132,17 @@ public class MineralSpringController {
 
 
 
-        return mineralSpring;
+        return "searchResult";
 
     }
 
 
 
     //TODO 약수터 이름으로 부적합, 적합 판정
-    @RequestMapping(value="/AsSpring", method = RequestMethod.GET, produces = "application/json")
-    public MineralAsSpring getMineralSpringAsSpringName(@RequestParam(name="AsSpring", required=true, defaultValue = "흑성산약수터") String AsSpring,
-                                             @RequestParam(name="time", required = true ,defaultValue = "0000") String time,
-                                             @RequestParam(name="date", required = true, defaultValue = "20181216") String date) throws IOException {
+    @RequestMapping(value="/AsSpring", method = RequestMethod.GET)
+    public String getMineralSpringAsSpringName(@RequestParam(name="AsSpring", required=true, defaultValue = "흑성산약수터") String AsSpring,
+                                                        @RequestParam(name="time", required = true ,defaultValue = "0000") String time,
+                                                        @RequestParam(name="date", required = true, defaultValue = "20181216") String date) throws IOException {
 
         waterService.getWater2(AsSpring);
 
@@ -155,7 +165,7 @@ public class MineralSpringController {
         weatherService.weatherServiceClear();
         waterService.WaterServiceClear();
 
-        return mineralAsSpring;
+        return "searchResult";
     }
 
 
