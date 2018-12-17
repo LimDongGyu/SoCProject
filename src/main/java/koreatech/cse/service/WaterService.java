@@ -273,7 +273,7 @@ public class WaterService {
     public void getWeatherServiceCall2(int x, int y, String date, String time) throws IOException {
 
 //        weatherService.getWeather(x, y, date, time);
-        weatherService.getWeather(55, 127, date, time);
+        weatherService.getWeather(x, y, date, time);
 
         mineralSpringResult.add(weatherService.list.toString());
         mineralSpringResult.add(Double.toString(weatherService.priority));

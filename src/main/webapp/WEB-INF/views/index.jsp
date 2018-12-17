@@ -114,7 +114,6 @@
                     console.log(d.value);
 
 
-
                     for (x in d) {
                         var opt = document.createElement("option");
                         opt.value = d[x];
